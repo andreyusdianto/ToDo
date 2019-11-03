@@ -11797,11 +11797,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Andre.Yusdianto\\Todo_RestAPI\\Todo_RestAPI\\Todo_RestAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Andre.Yusdianto\\GITHUB\\Todo_RestAPI\\Todo_RestAPI\\Todo_RestAPI.csproj",
       "projectName": "Todo_RestAPI",
-      "projectPath": "C:\\Users\\Andre.Yusdianto\\Todo_RestAPI\\Todo_RestAPI\\Todo_RestAPI.csproj",
+      "projectPath": "C:\\Users\\Andre.Yusdianto\\GITHUB\\Todo_RestAPI\\Todo_RestAPI\\Todo_RestAPI.csproj",
       "packagesPath": "C:\\Users\\Andre.Yusdianto\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Andre.Yusdianto\\Todo_RestAPI\\Todo_RestAPI\\obj\\",
+      "outputPath": "C:\\Users\\Andre.Yusdianto\\GITHUB\\Todo_RestAPI\\Todo_RestAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

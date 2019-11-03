@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Todo_RestAPI.Models;
 
@@ -11,8 +12,17 @@ namespace Todo_RestAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        //using static variable as I don't have enough time to store it into db / file
-        static List<ToDo> ToDoList = new List<ToDo>();
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly string _rootPath;
+        private readonly List<ToDo> ToDoList;
+
+        public ValuesController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+            _rootPath = _hostingEnvironment.ContentRootPath;
+            //load data from static file (assets/dbase.json)
+            ToDoList = ToDo.LoadData(_rootPath);
+        }
 
         //Create New To Do
         [HttpPost]
@@ -30,6 +40,7 @@ namespace Todo_RestAPI.Controllers
 
             //push item to list
             ToDoList.Add(new ToDo(id, title, desc, completePercentage, expiryDate));
+            ToDo.CommitChanges(ToDoList, _rootPath);
 
             return "ok";
         }
@@ -83,6 +94,8 @@ namespace Todo_RestAPI.Controllers
                 foundItem.Description = desc;
                 foundItem.ExpiryDate = expiryDate;
             }
+            //update data changes and save to dbase.json
+            ToDo.CommitChanges(ToDoList, _rootPath);
 
             return "ok";
         }
@@ -102,6 +115,8 @@ namespace Todo_RestAPI.Controllers
                 //overwrite below attributes that come from request
                 foundItem.CompletePercentage = completePercentage;
             }
+            //update data changes and save to dbase.json
+            ToDo.CommitChanges(ToDoList, _rootPath);
 
             return "ok";
         }
@@ -113,7 +128,7 @@ namespace Todo_RestAPI.Controllers
             //get post body from request
             var id = int.Parse(HttpContext.Request.Form["id"]);
 
-            //find item in todo list by id
+            //find item in todo list by id using linq
             var foundItem = ToDoList.Where(f => f.Id == id).FirstOrDefault();
 
             if (foundItem != null)
@@ -123,7 +138,8 @@ namespace Todo_RestAPI.Controllers
                 //assuming if mark as done then update complete percentage to 100%
                 foundItem.CompletePercentage = 100;
             }
-
+            //update data changes and save to dbase.json
+            ToDo.CommitChanges(ToDoList, _rootPath);
             return "ok";
         }
 
@@ -132,14 +148,16 @@ namespace Todo_RestAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            //find item in todo list by id
+            //find item in todo list by id using linq
             var foundItem = ToDoList.Where(f => f.Id == id).FirstOrDefault();
 
             if (foundItem != null)
             {
+                //remove item by found item object
                 ToDoList.Remove(foundItem);
             }
-            
+            //update data changes and save to dbase.json
+            ToDo.CommitChanges(ToDoList, _rootPath);
         }
     }
 }
