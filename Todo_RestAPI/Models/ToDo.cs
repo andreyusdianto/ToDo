@@ -42,6 +42,8 @@ namespace Todo_RestAPI.Models
             var filePath = rootPath + dbaseName;
             var dbase_content = System.IO.File.ReadAllText(filePath);
             var dbRes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ToDo>>(dbase_content);
+
+            if (dbRes == null) dbRes = new List<ToDo>();
             return dbRes;
         }
     }
